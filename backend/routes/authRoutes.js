@@ -3,15 +3,17 @@ import {authMiddleware} from "../middleware/authMiddleware.js";
 import {
   registerUser,
   loginUser,
+  googleLogin
 } from "../controllers/authController.js";
 
 const router = express.Router();
 
 router.post("/register", registerUser);
+router.post("/google-login", googleLogin);
 router.post("/login", loginUser);
 
 // 🔒 PROTECTED ROUTE
-router.get("/Home", authMiddleware, (req, res) => {
+router.get("/", authMiddleware, (req, res) => {
   res.json({ 
     message: "Protected route access granted",
     user: req.user 

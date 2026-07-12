@@ -25,13 +25,26 @@ function Register() {
 
     try {
       const data = await registerUser(formData);
-      console.log(data);
+
+        console.log("Full Response:", data);
+        console.log("User:", data.user);
+        console.log("ID:", data.user?._id);
+
+
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.user._id); // ✅ Add this
+            console.log("Saved:", localStorage.getItem("userId"));
+
+
+
+      
 
       setSuccessMsg("Account Created Successfully 🎉");
 
       // auto hide popup after 3 sec
       setTimeout(() => {
-        navigate("/Home");
+        navigate("/");
       }, 2000);
 
       // form reset (optional but good UX)
@@ -51,10 +64,22 @@ function Register() {
 
       {/* ✅ POPUP */}
       {successMsg && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-white-500 text-black py-3 rounded-xl shadow-lg z-50">
-          {successMsg}
-        </div>
-      )}
+  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+    <div className="bg-green-500 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce">
+      <span className="text-2xl">🎉</span>
+
+      <div>
+        <h3 className="font-bold">
+          Success
+        </h3>
+
+        <p className="text-sm">
+          Account Created Successfully
+        </p>
+      </div>
+    </div>
+  </div>
+)}
 
       <div className="bg-white p-8 rounded-2xl w-full max-w-md border border-gray-200 shadow-lg">
 
