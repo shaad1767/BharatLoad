@@ -101,10 +101,10 @@ const Profile = () => {
 
               {user.profileImage ? (
                 <img
-                  src={`http://localhost:5000/uploads/${user.profileImage}`}
-                  alt=""
-                  className="w-44 h-44 rounded-full border-8 border-white shadow-2xl object-cover"
-                />
+                src={`${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace("/api", "")}/uploads/${user.profileImage}`}
+                alt=""
+                className="w-44 h-44 rounded-full border-8 border-white shadow-2xl object-cover"
+              />
               ) : (
                 <FaUserCircle className="text-[180px] text-gray-300 bg-white rounded-full border-8 border-white shadow-2xl" />
               )}

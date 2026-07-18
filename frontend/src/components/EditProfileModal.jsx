@@ -39,11 +39,11 @@ const EditProfileModal = ({
       profileImage: null,
     });
 
-    setPreview(
-      user.profileImage
-        ? `http://localhost:5000/uploads/${user.profileImage}`
-        : ""
-    );
+        setPreview(
+        user.profileImage
+          ? `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace("/api", "")}/uploads/${user.profileImage}`
+          : ""
+      );
   }
 }, [user]);
 

@@ -33,10 +33,10 @@ const Profile = () => {
 
           <img
             src={
-              driver?.driverPhoto
-                ? `http://localhost:5000/uploads/${driver.driverPhoto}`
-                : "https://via.placeholder.com/150"
-            }
+            driver?.driverPhoto
+              ? `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace("/api", "")}/uploads/${driver.driverPhoto}`
+              : "https://via.placeholder.com/150"
+          }
             alt="Driver"
             className="w-40 h-40 rounded-full border-4 border-blue-500 object-cover shadow-lg"
           />

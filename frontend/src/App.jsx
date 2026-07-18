@@ -4,7 +4,7 @@ import Login from "./pages/login";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Profile from "./pages/profile";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import Support from "./pages/Support";
 import TruckSections from "./pages/Trucks";
 import Address from "./pages/Address";
