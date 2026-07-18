@@ -148,15 +148,14 @@ export default function Booking() {
     const apiKey = import.meta.env.VITE_ORS_API_KEY;
 
     const res = await axios.post(
-      "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
-      {
+         "/api/ors/v2/directions/driving-car/geojson", // 👈 ye vercel.json se aa rha h 
+         {      
         coordinates: [
           [pickupCoords[1], pickupCoords[0]],
           [dropCoords[1], dropCoords[0]],
         ],
       },
       {
-        // 👈 params wala block poora hata diya hai kyunki POST me uski zaroorat nahi hai
         headers: {
           "Content-Type": "application/json",
           "Authorization": apiKey // 👈 Bearer hata kar direct apiKey bhej rahe hain

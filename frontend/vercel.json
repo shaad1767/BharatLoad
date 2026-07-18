@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/ors/:path*",
+      "destination": "https://api.openrouteservice.org/:path*"
+    }
+  ]
+}
