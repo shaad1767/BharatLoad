@@ -139,50 +139,51 @@ export default function Booking() {
   useEffect(() => {
   if (!pickupCoords || !dropCoords) return;
 
-  console.log("API KEY:", API_KEY);
-console.log("pickupCoords:", pickupCoords);
-console.log("dropCoords:", dropCoords);
+//   console.log("API KEY:", API_KEY);
+// console.log("pickupCoords:", pickupCoords);
+// console.log("dropCoords:", dropCoords);
 
-  const getRoute = async () => {
-    try {
-      const res = await axios.post(
-  "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
-  {
-    coordinates: [
-      [pickupCoords[1], pickupCoords[0]],
-      [dropCoords[1], dropCoords[0]],
-    ],
-  },
-  {
-    params: {
-      api_key: API_KEY, // 👈 USE PARAM NOT HEADER
-    },
-    headers: {
-      "Content-Type": "application/json",
-    },
+ const getRoute = async () => {
+  try {
+    const apiKey = import.meta.env.VITE_ORS_API_KEY;
+
+    const res = await axios.post(
+      "https://api.openrouteservice.org/v2/directions/driving-car/geojson",
+      {
+        coordinates: [
+          [pickupCoords[1], pickupCoords[0]],
+          [dropCoords[1], dropCoords[0]],
+        ],
+      },
+      {
+        // 👈 params wala block poora hata diya hai kyunki POST me uski zaroorat nahi hai
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": apiKey // 👈 Bearer hata kar direct apiKey bhej rahe hain
+        },
+      }
+    );
+
+    const feature = res.data.features[0];
+
+    if (!feature) return;
+
+    const km = feature.properties.summary.distance / 1000;
+    const mins = feature.properties.summary.duration / 60;
+
+    setDistance(km.toFixed(2));
+    setDuration(mins.toFixed(0));
+
+    const points = feature.geometry.coordinates.map((c) => [c[1], c[0]]);
+    setRoutePoints(points);
+
+    const rate = truckRates[state?.name] || 20;
+    setPrice(Math.round(rate * km));
+
+  } catch (err) {
+    console.log("Route error:", err.response?.data || err.message);
   }
-);
-
-      const feature = res.data.features[0];
-
-      if (!feature) return;
-
-      const km = feature.properties.summary.distance / 1000;
-      const mins = feature.properties.summary.duration / 60;
-
-      setDistance(km.toFixed(2));
-      setDuration(mins.toFixed(0));
-
-      const points = feature.geometry.coordinates.map((c) => [c[1], c[0]]);
-      setRoutePoints(points);
-
-      const rate = truckRates[state?.name] || 20;
-      setPrice(Math.round(rate * km));
-
-    } catch (err) {
-      console.log("Route error:", err.response?.data || err.message);
-    }
-  };
+};
 
   getRoute();
 }, [pickupCoords, dropCoords, state?.name]);
