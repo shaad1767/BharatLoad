@@ -13,7 +13,7 @@ router.post("/google-login", googleLogin);
 router.post("/login", loginUser);
 
 // 🔒 PROTECTED ROUTE
-router.get("/", authMiddleware, (req, res) => {
+router.get("/", (req, res) => {
   res.json({ 
     message: "Protected route access granted",
     user: req.user 

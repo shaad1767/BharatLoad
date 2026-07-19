@@ -31,7 +31,7 @@ export const registerUser = async (req, res) => {
     // Generate JWT Token
     const token = jwt.sign(
       { id: user._id },
-      "SECRET_KEY",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -78,7 +78,7 @@ export const loginUser = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id },
-      "SECRET_KEY",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -127,7 +127,7 @@ export const googleLogin = async (req, res) => {
 
     const jwtToken = jwt.sign(
       { id: user._id },
-      "SECRET_KEY",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 

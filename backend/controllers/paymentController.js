@@ -2,19 +2,40 @@ import razorpay from "../config/razorpay.js";
 import crypto from "crypto";
 
 
+// paymentController.js
+
 export const createOrder = async (req, res) => {
+    try {
+        const { amount } = req.body;
 
-    const { amount } = req.body;
+        // Validation check: Dekho frontend se price aa bhi raha hai ya nahi
+        if (!amount || isNaN(amount)) {
+            return res.status(400).json({ success: false, message: "Valid Amount is required" });
+        }
 
-    const options = {
-        amount: amount * 100,
-        currency: "INR",
-        receipt: "receipt_" + Date.now()
-    };
+        const options = {
+            amount: Math.round(Number(amount) * 100), // Ensure decimal numbers round off ho jayein aur absolute integer banein
+            currency: "INR",
+            receipt: "receipt_" + Date.now()
+        };
 
-    const order = await razorpay.orders.create(options);
+        // Razorpay order create call
+        const order = await razorpay.orders.create(options);
+        
+        // Agar success hua toh frontend ko order details bhej do
+        return res.json(order);
 
-    res.json(order);
+    } catch (error) {
+        // 🔎 YEH LINE TERMINAL MEIN EXACT ERROR DIKHAYEGI (Bina [object Object] ke)
+        console.error("🔴 RAZORPAY API CRASH ERROR:", JSON.stringify(error, null, 2));
+        
+        // Frontend ko response bhejo taaki loader na atka rahe
+        return res.status(error.statusCode || 500).json({ 
+            success: false, 
+            message: error.description || "Razorpay Order Creation Failed",
+            error: error
+        });
+    }
 };
 
 
