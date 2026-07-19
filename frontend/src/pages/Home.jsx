@@ -136,95 +136,51 @@ export default function Home() {
       </div>
 
       {/* ================= INDUSTRIES SECTION ================= */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
-
-        <div className="mb-12">
-
-          <h2 className="text-4xl lg:text-5xl font-black mt-2">
-            Industries We Serve
-          </h2>
-
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-
-          {industries.map((item, index) => (
-            <Link to="/Trucksections"
-            className="text-black font-semibold hover:underline"
-          >
-            <div
-              key={index}
-              className="
-                group
-                bg-white
-                rounded-3xl
-                overflow-hidden
-                border
-                shadow-md
-                hover:shadow-2xl
-                transition-all
-                duration-300
-                hover:-translate-y-2
-              "
-             
-            >
-
-              {/* IMAGE */}
-              <div className="overflow-hidden">
-
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="
-                    w-full
-                    h-45
-                    object-cover
-                    transition-all
-                    duration-500
-                    group-hover:scale-110
-                  "
-                />
-
-              </div>
-
-              {/* CONTENT */}
-              <div className="p-6">
-
-                <h3 className="text-2xl font-bold">
-                  {item.title}
-                </h3>
-
-                <p className="text-gray-600 mt-3 leading-relaxed">
-                  {item.desc}
-                </p>
-
-                <div className="mt-6 flex justify-end">
-
-                  <div className="
-                    h-10
-                    w-10
-                    rounded-full
-                    bg-black
-                    text-white
-                    flex
-                    items-center
-                    justify-center
-                  ">
-                    <ArrowRight size={18} />
-                  </div>
-
-                </div>
-
-              </div>
-
+     {/* ================= INDUSTRIES SECTION ================= */}
+          <section className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+            <div className="mb-12">
+              <h2 className="text-4xl lg:text-5xl font-black mt-2">
+                Industries We Serve
+              </h2>
             </div>
-              </Link>
-          ))}
 
-        </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {industries.map((item, index) => {
+                // Yahan check kar rhe hain ki token hai ya nahi
+                const isLoggedIn = !!localStorage.getItem("token");
 
-      </section>
+                return (
+                  <Link 
+                    to={isLoggedIn ? "/Trucksections" : "/login"} // Agar login hai toh target page, nahi toh login page
+                    key={index}
+                    className="text-black font-semibold hover:underline"
+                  >
+                    <div className="group bg-white rounded-3xl overflow-hidden border shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                      {/* IMAGE */}
+                      <div className="overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-45 object-cover transition-all duration-500 group-hover:scale-110"
+                        />
+                      </div>
+
+                      {/* CONTENT */}
+                      <div className="p-6">
+                        <h3 className="text-2xl font-bold">{item.title}</h3>
+                        <p className="text-gray-600 mt-3 leading-relaxed">{item.desc}</p>
+                        <div className="mt-6 flex justify-end">
+                          <div className="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center">
+                            <ArrowRight size={18} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
 
        <Footer />
 

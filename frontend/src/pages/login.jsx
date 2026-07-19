@@ -25,47 +25,52 @@ function Login() {
       const data = await loginUser(formData);
 
       console.log("Login Response:", data);
-      console.log("User ID:", data.user?._id);
-      console.log("ID:", data.user?._id);
 
       // Token save
       if (data.user?._id) {
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("userId", data.user._id);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user._id);
 
-        console.log("Saved UserId:", localStorage.getItem("userId"));
+        // Success Popup
+        alert("Login Successful! Welcome back.");
+        
+        // Home page par redirect
+        navigate("/");
       } else {
         console.log("❌ user._id nahi mila");
+        alert("Something went wrong. Please try again.");
       }
-      // Home page par redirect
-      navigate("/");
 
     } catch (error) {
       console.log(error?.response?.data);
+      // Backend se jo error message aa rha hai (jaise "Invalid email or password") use alert me dikhayenge
+      const errorMessage = error?.response?.data?.message || "Invalid Email or Password";
+      alert(errorMessage);
     }
   };
 
   const handleGoogleLogin = async (credentialResponse) => {
-  try {
-    const data = await googleLogin(credentialResponse.credential);
+    try {
+      const data = await googleLogin(credentialResponse.credential);
 
-    console.log("Google Login Response:", data);
+      console.log("Google Login Response:", data);
 
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("userId", data.user._id);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.user._id);
 
-    navigate("/");
-  } catch (error) {
-    console.log(error?.response?.data || error);
-    alert("Google Login Failed");
-  }
-};
+      // Success Popup for Google Login
+      alert("Google Login Successful!");
+      
+      navigate("/");
+    } catch (error) {
+      console.log(error?.response?.data || error);
+      alert("Google Login Failed");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
-
       <div className="bg-white p-8 rounded-2xl w-full max-w-md border border-gray-200 shadow-lg">
-
         <h1 className="text-3xl font-bold text-black text-center mb-2">
           Welcome Back
         </h1>
@@ -75,18 +80,17 @@ function Login() {
         </p>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-5">
-
           <div>
             <label className="text-black text-sm mb-2 block">
               Email
             </label>
-
             <input
               type="email"
               name="email"
               placeholder="Enter email"
               value={formData.email}
               onChange={handleChange}
+              required // Empty submit rokne ke liye
               className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
             />
           </div>
@@ -95,13 +99,13 @@ function Login() {
             <label className="text-black text-sm mb-2 block">
               Password
             </label>
-
             <input
               type="password"
               name="password"
               placeholder="Enter password"
               value={formData.password}
               onChange={handleChange}
+              required // Empty submit rokne ke liye
               className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
             />
           </div>
@@ -112,7 +116,6 @@ function Login() {
           >
             Login
           </button>
-
         </form>
 
         <div className="flex items-center gap-3 my-5">
@@ -121,14 +124,15 @@ function Login() {
           <div className="flex-1 h-[1px] bg-gray-300"></div>
         </div>
 
-      <div className="flex justify-center">
-        <GoogleLogin
-          onSuccess={handleGoogleLogin}
-          onError={() => {
-            console.log("Google Login Failed");
-          }}
-        />
-      </div>
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => {
+              console.log("Google Login Failed");
+              alert("Google Login Failed");
+            }}
+          />
+        </div>
 
         <p className="text-center text-gray-500 mt-6 text-sm">
           Don’t have an account?{" "}
@@ -139,9 +143,7 @@ function Login() {
             Register
           </Link>
         </p>
-
       </div>
-
     </div>
   );
 }

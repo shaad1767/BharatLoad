@@ -26,15 +26,15 @@ function Register() {
     try {
       const data = await registerUser(formData);
 
-        console.log("Full Response:", data);
-        console.log("User:", data.user);
-        console.log("ID:", data.user?._id);
+       // console.log("Full Response:", data);
+        //console.log("User:", data.user);
+       // console.log("ID:", data.user?._id);
 
 
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.user._id); // ✅ Add this
-            console.log("Saved:", localStorage.getItem("userId"));
+           // console.log("Saved:", localStorage.getItem("userId"));
 
 
 
